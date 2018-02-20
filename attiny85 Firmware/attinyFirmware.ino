@@ -9,20 +9,10 @@ void setup(){
   pinMode(0, OUTPUT); // Led de confirmacion de interrupcion
   pinMode(1, OUTPUT); // Pin de interrupcion al ESP8266
 
-  attachInterrupt(0, onPulse, FALLING); // Interrupcion en pin 2 (int 0) 
+  attachInterrupt(0, onPulse, RISING); // Interrupcion en pin 2 (int 0) 
 }
 
 void loop(){
-  lastTime = micros();
-  if(lastTime - sendTime >= 60000000){ //Enviamos la cantidad de pulsos cada 60000000 microsegundos (60segundos)
-    sendTime = micros();
-    digitalWrite(1, HIGH);
-    delay(40);
-    atSerial.print(pulseCount);
-    atSerial.print('\n');
-    pulseCount = 0;
-    digitalWrite(1, LOW);
-  }
 }
 
 
@@ -31,5 +21,21 @@ void onPulse(){ // Rutina de interrupcion
   digitalWrite(0, HIGH);
   delay(50);
   digitalWrite(0, LOW);
+
+  //enviamos la lectura una vez recibimos el pulso
+  lastTime = micros();
+  
+  if(lastTime - sendTime >= 60000000){ //Enviamos la cantidad de pulsos cada 60000000 microsegundos (60segundos)
+    noInterrupts();
+    sendTime = micros();
+    digitalWrite(1, HIGH);
+    delay(40);
+    atSerial.print(pulseCount);
+    delay(1);
+    atSerial.print('\n');
+    pulseCount = 0;
+    digitalWrite(1, LOW);
+    interrupts();
+  }
 }
 

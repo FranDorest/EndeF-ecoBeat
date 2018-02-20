@@ -1,4 +1,10 @@
 
+
+# AVISO
+
+Este Firmware ha sido ligeramente modificado para el proyecto EndeF-ecoBeat. No es el Firmware original de Open Energy Monitor.
+
+
 # EmonESP
 
 [![Build Status](https://travis-ci.org/openenergymonitor/EmonESP.svg?branch=master)](https://travis-ci.org/openenergymonitor/EmonESP)
