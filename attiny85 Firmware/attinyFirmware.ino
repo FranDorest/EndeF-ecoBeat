@@ -5,7 +5,7 @@ long pulseCount = 0; //Numero de pulsos en 1 minuto
 unsigned long lastTime, sendTime; // Diferencia de tiempo entre el ultimo envio y la comprobacion
 
 void setup(){
-  atSerial.begin(57600); // Comunicacion serie a 115200 baudios
+  atSerial.begin(9600); // Comunicacion serie a 115200 baudios
   pinMode(0, OUTPUT); // Led de confirmacion de interrupcion
   pinMode(1, OUTPUT); // Pin de interrupcion al ESP8266
 
