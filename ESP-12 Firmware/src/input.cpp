@@ -63,9 +63,8 @@ boolean input_get(String& data){
       energy = 0.00;
     }
     else{
-      mspp = 60000/pulsos;
-      power = 3600000/(mspp*ppw);
-      energy = (1/ppw)*pulsos;
+      power = 3600000/(60000/pulsos);
+      energy = pulsos;
     }
     data = "Potencia:";
     data += String(power);
