@@ -27,7 +27,7 @@
 #include "input.h"
 #include "SoftwareSerial.h"
 
-SoftwareSerial tinySerial(D1, D2);
+SoftwareSerial tinySerial(D2, D1);
 
 String input_string="";
 String last_datastr="";

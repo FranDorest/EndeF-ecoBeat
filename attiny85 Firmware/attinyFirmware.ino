@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial atSerial(4,3); //Comunicacion serie con ESP8266 
+SoftwareSerial atSerial(3,4); //Comunicacion serie con ESP8266 
 long pulseCount = 0; //Numero de pulsos en 1 minuto
 unsigned long lastTime, sendTime; // Diferencia de tiempo entre el ultimo envio y la comprobacion
 
