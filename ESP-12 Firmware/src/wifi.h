@@ -48,6 +48,10 @@ extern String rssi;
 
 // Network state
 extern String ipaddress;
+extern String ipend1;
+extern String ipend2;
+extern String ipend3;
+extern String ipend4;
 
 // mDNS hostname
 extern const char *esp_hostname;

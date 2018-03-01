@@ -41,12 +41,16 @@ IPAddress apIP(192, 168, 4, 1);
 IPAddress netMsk(255, 255, 255, 0);
 
 // hostname for mDNS. Should work at least on windows. Try http://emonesp.local
-const char *esp_hostname = "emonesp";
+const char *esp_hostname = "ecoBeat";
 
 // Wifi Network Strings
 String connected_network = "";
 String status_string = "";
 String ipaddress = "";
+String ipend1 = "";
+String ipend2 = "";
+String ipend3 = "";
+String ipend4 = "";
 
 unsigned long Timer;
 String st, rssi;
@@ -76,8 +80,7 @@ int wifi_mode = WIFI_MODE_STA;
 // Start Access Point
 // Access point is used for wifi network selection
 // -------------------------------------------------------------------
-void
-startAP() {
+void startAP() {
   DEBUG.print("Starting AP");
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
@@ -119,8 +122,7 @@ startAP() {
 // -------------------------------------------------------------------
 // Start Client, attempt to connect to Wifi network
 // -------------------------------------------------------------------
-void
-startClient() {
+void startClient() {
   DEBUG.print("Connecting to SSID: ");
   DEBUG.println(esid.c_str());
   // DEBUG.print(" epass:");
@@ -168,20 +170,23 @@ startClient() {
     digitalWrite(WIFI_LED, wifiLedState);
 #endif
 
-    IPAddress myAddress = WiFi.localIP();
+    IPAddress myAddress = WiFi.localIP(); // direccion ip
     char tmpStr[40];
     sprintf(tmpStr, "%d.%d.%d.%d", myAddress[0], myAddress[1], myAddress[2],
             myAddress[3]);
     DEBUG.print("Connected, IP: ");
     DEBUG.println(tmpStr);
+    ipend1 = myAddress[0];
+  ipend2 = myAddress[1];
+  ipend3 = myAddress[2];
+  ipend4 = myAddress[3];
     // Copy the connected network and ipaddress to global strings for use in status request
     connected_network = esid;
     ipaddress = tmpStr;
   }
 }
 
-void
-wifi_setup() {
+void wifi_setup() {
 #ifdef WIFI_LED
   pinMode(WIFI_LED, OUTPUT);
   digitalWrite(WIFI_LED, wifiLedState);
@@ -210,8 +215,7 @@ wifi_setup() {
   Timer = millis();
 }
 
-void
-wifi_loop() {
+void wifi_loop() {
 #ifdef WIFI_LED
   if (wifi_mode == WIFI_MODE_AP_ONLY && millis() > wifiLedTimeOut) {
     wifiLedState = !wifiLedState;
@@ -231,8 +235,7 @@ wifi_loop() {
   }
 }
 
-void
-wifi_restart() {
+void wifi_restart() {
   // Startup in STA + AP mode
   WiFi.mode(WIFI_AP_STA);
   WiFi.softAPConfig(apIP, apIP, netMsk);
@@ -249,8 +252,7 @@ wifi_restart() {
   startClient();
 }
 
-void
-wifi_scan() {
+void wifi_scan() {
   DEBUG.println("WIFI Scan");
   int n = WiFi.scanNetworks();
   DEBUG.print(n);
@@ -267,7 +269,6 @@ wifi_scan() {
   }
 }
 
-void
-wifi_disconnect() {
+void wifi_disconnect() {
   WiFi.disconnect();
 }

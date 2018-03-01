@@ -26,17 +26,21 @@
 #include "emonesp.h"
 #include "input.h"
 #include "SoftwareSerial.h"
+#include "wifi.h"
 
 SoftwareSerial tinySerial(D2, D1);
 
 String input_string="";
 String last_datastr="";
+unsigned int lastSended;
+unsigned int currentTime;
 
 boolean input_get(String& data){
 
   boolean gotData = false;
 
   tinySerial.begin(9600);
+  
   // If data from test API e.g `http://<IP-ADDRESS>/input?string=CT1:3935,CT2:325,T1:12.5,T2:16.9,T3:11.2,T4:34.7`
   if(input_string.length() > 0) {
     Serial.println("hay cadena");
@@ -52,18 +56,21 @@ boolean input_get(String& data){
   }
   // If data received on tinySerial
   else if (tinySerial.available()) {
+    lastSended = currentTime;
+    Serial.println(lastSended);
+    currentTime = millis();
+    Serial.println(currentTime);
     // Could check for string integrity here
     String tinyString = tinySerial.readStringUntil('\n');
     double power, mspp, energy;
     int pulsos;
-    int ppw = 1;
     pulsos = tinyString.toInt();
     if(pulsos == 0){
       power = 0.00;
       energy = 0.00;
     }
     else{
-      power = 3600000/(60000/pulsos);
+      power = 3600000/((currentTime-lastSended)/pulsos);
       energy = pulsos;
     }
     data = "Potencia:";
@@ -72,6 +79,14 @@ boolean input_get(String& data){
     data += String(energy);
     data += ",pulsos:";
     data +=String(pulsos);
+    data += ",ip1:";
+    data +=String(ipend1);
+    data += ",ip2:";
+    data +=String(ipend2);
+    data += ",ip3:";
+    data +=String(ipend3);
+    data += ",ip4:";
+    data +=String(ipend4);
     gotData = true;
   }
 
